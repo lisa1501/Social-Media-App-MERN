@@ -28,8 +28,10 @@ const Form = ({currentId, setCurrentId }) => {
             dispatch(updatePost(currentId, postData));
         }else{
             dispatch(createPost(postData));
+            
         }
         clear();
+        
     }
 
     const clear = ()=>{
