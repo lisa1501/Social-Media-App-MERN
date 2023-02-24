@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Paper, Grid, Typography, Container, TextField} from '@material-ui/core';
+import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockoutLineIcon from '@material-ui/icons/LockOutlined';
 import {GoogleLogin, GoogleOAuthProvider} from '@react-oauth/google'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 import useStyles from './styles';
 import Input from './Input';
-
-import jwt_decode from 'jwt-decode';
 
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useHistory()
 
     const handleShowPassword = () =>setShowPassword((prevShowPassword)=> !prevShowPassword);
 
@@ -26,8 +30,19 @@ const Auth = () => {
     }
 
     const googleSuccess = async (res) => {
-        const result = jwt_decode(res?.credential);
-        console.log(result)
+
+        const token = res?.credential;
+        // console.log(token)
+        const result = jwt_decode(token);
+        console.log(result.email)
+
+        try {
+            dispatch({ type: 'AUTH', data: { result, token } });
+            
+            navigate.push('/');
+        } catch (error) {
+            console.log(error);
+        }
     }
     
     const googleFailure = (error) => {
