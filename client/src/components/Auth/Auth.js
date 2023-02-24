@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container, TextField} from '@material-ui/core';
 import LockoutLineIcon from '@material-ui/icons/LockOutlined';
-
+import {GoogleLogin, GoogleOAuthProvider} from '@react-oauth/google'
 import useStyles from './styles';
 import Input from './Input';
+
+import jwt_decode from 'jwt-decode';
 
 const Auth = () => {
     const classes = useStyles();
@@ -21,6 +23,16 @@ const Auth = () => {
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
         handleShowPassword(false);
+    }
+
+    const googleSuccess = async (res) => {
+        const result = jwt_decode(res?.credential);
+        console.log(result)
+    }
+    
+    const googleFailure = (error) => {
+        console.log(error)
+        console.log("Google Sign In was unsuccessful, Try Again Later")
     }
 
     return (
@@ -46,7 +58,16 @@ const Auth = () => {
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         {isSignup ? 'Sign Up' :' Sign In'}
                     </Button>
-                    <Grid container justify="flex-end">
+
+                    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                        <GoogleLogin 
+                            onSuccess={googleSuccess}
+                            onFailure={googleFailure}
+                            cookiePolicy="single_host_origin"
+                            />
+                    </GoogleOAuthProvider>
+
+                    <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>
                                 { isSignup ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
