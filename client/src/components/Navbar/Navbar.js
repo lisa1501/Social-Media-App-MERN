@@ -2,6 +2,8 @@ import React, { useState, useEffect} from 'react';
 import { AppBar, Avatar, Toolbar, Typography, Button } from '@material-ui/core';
 import { Link,useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import decode from 'jwt-decode';
+
 import useStyles from './styles';
 import image from '../../images/image.png'
 
@@ -21,14 +23,18 @@ const Navbar = () => {
         dispatch({ type:'LOGOUT'});
         navigate.push('/');
         setUser(null);
-        console.log(user)
+    
 
     }
 
     useEffect(() => {   
         const token = user?.token;
         
-        //JWT...
+        if(token) {
+            const decodeToken = decode(token);
+            
+            if(decodeToken.exp * 1000 < new Date().getTime()) logOut();
+        }
 
         setUser(JSON.parse(localStorage.getItem('profile')))
     }, [location])
