@@ -23,8 +23,6 @@ const Navbar = () => {
         dispatch({ type:'LOGOUT'});
         navigate.push('/');
         setUser(null);
-    
-
     }
 
     useEffect(() => {   
