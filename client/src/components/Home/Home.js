@@ -14,8 +14,6 @@ function useQuery(){
     return new URLSearchParams(useLocation().search);
 }
 
-
-
 const Home = () => {
     const [currentId, setCurrentId] = useState(0);
     const dispatch = useDispatch();
@@ -32,9 +30,17 @@ const Home = () => {
         dispatch(getPosts());
     },[currentId, dispatch])
 
+    const searchPost = () =>{
+        if(search.trim()) {
+            //dispatch -> fetch search post 
+        }else{
+            history.push('/')
+        }
+    }
+
     const handleKeyPress = (e) =>{
         if(e.keyCode === 13){
-            //search post
+            searchPost();
         }
     }
 
@@ -67,6 +73,14 @@ const Home = () => {
                                 label="Search Tags"
                                 variant="outlined"
                             />
+                            <Button 
+                                onClick={searchPost} 
+                                className={classes.searchButton}
+                                color="primary"
+                                variant="contained"
+                            >
+                                Search
+                            </Button>
                         </AppBar>
                         <Form currentId={currentId} setCurrentId={setCurrentId} />
                         <Paper  elevation={1}>
