@@ -1,7 +1,7 @@
 import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING } from '../constants/actionTypes';
 
 export default (state = { isLoading: true, posts: [] }, action) =>{
-    console.log(action.payload)
+    // console.log(action.payload)
     switch (action.type) {
         case START_LOADING :
             return { ...state, isLoading: true}
