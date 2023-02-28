@@ -9,9 +9,10 @@ import { createPost, updatePost } from '../../actions/posts'
 // Get the current post id
 
 const Form = ({currentId, setCurrentId }) => {
-    
+    console.log(currentId)
     const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: '' });
-    const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
+    const post = useSelector((state=> state.currentId ? state.posts.find((message) => message._id === currentId) : null));   
+    console.log(post)                                               
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -30,10 +31,12 @@ const Form = ({currentId, setCurrentId }) => {
 
         if(currentId===0){
             dispatch(createPost({ ...postData, name: user?.result?.name }));
+            
             clear();
             
         }else{
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+            
             clear();
             
         } 
