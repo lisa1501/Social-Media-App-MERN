@@ -1,4 +1,4 @@
-import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING, COMMENT } from '../constants/actionTypes';
 
 export default (state = { isLoading: true, posts: [] }, action) =>{
     // console.log(action.payload)
@@ -14,11 +14,21 @@ export default (state = { isLoading: true, posts: [] }, action) =>{
 
         case UPDATE:
         case LIKE:
-            // state.posts.map((post)=> console.log(post._id))
-            // state.posts.map((message)=> console.log(message._id))
-            // console.log(action.payload_.id)
             return { ...state, posts:state.posts.map((post) => post._id === action.payload._id ? action.payload : post)};
-
+        
+            case COMMENT:
+            return {
+                ... state, 
+                posts:state.posts.map((post) => {
+                    // change the post that just received a commnet
+                    if(post._id === action.payload._di ){
+                        return action.payload
+                    }
+                    //  return all the other posts normally
+                    return post;
+                }
+            )}
+        
         case FETCH_ALL:
             return{
                 ...state,
